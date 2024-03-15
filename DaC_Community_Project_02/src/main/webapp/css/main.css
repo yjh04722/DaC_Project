@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+		.container_left {
+			background-color: #fff;
+    		padding: 20px;
+    		border-radius: 8px;
+    		box-shadow: 0px 0px 10px 0px #000;
+			width: 600px;
+			height: 300px;
+			position: absolute;
+			margin-top: -300px;
+			margin-left: 50px;
+		}
+		.container_right {
+			background-color: #fff;
+	    	padding: 20px;
+    		border-radius: 8px;
+    		box-shadow: 0px 0px 10px 0px #000;
+			width: 600px;
+			height: 300px;
+			position: absolute;
+			margin-top: -300px;
+			margin-left: 655px;
+		}
+	
