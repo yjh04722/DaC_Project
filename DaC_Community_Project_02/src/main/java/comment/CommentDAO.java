@@ -85,7 +85,7 @@ public class CommentDAO {
 			while(rs.next()) {
 				Comment comment = new Comment();
 				comment.setCommentContent(rs.getString(1));
-				comment.setCommentID(rs.getInt(2));
+				comment.setCommentId(rs.getInt(2));
 				comment.setUserId(rs.getString(3));
 				comment.setCommentAvailable(rs.getInt(4));
 				comment.setCommentDate(rs.getString(5));
@@ -107,7 +107,7 @@ public class CommentDAO {
 			if(rs.next()) {//결과가 있다면
 				Comment comment = new Comment();
 				comment.setCommentContent(rs.getString(1));
-				comment.setCommentID(rs.getInt(2));
+				comment.setCommentId(rs.getInt(2));
 				comment.setUserId(rs.getString(3));
 				comment.setCommentAvailable(rs.getInt(4));
 				comment.setCommentDate(rs.getString(5));

@@ -20,7 +20,7 @@ public class Comment {
 		return commentId;
 	}
 	
-	public void setCommentID(int commentId) {
+	public void setCommentId(int commentId) {
 		this.commentId = commentId;
 	}
 	
