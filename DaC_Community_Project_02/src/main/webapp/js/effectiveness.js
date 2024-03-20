@@ -38,10 +38,5 @@
             userAddr.focus();
             return false;
         }
-        if(userId.value == ""){
-            alert("별명을 입력해주세요.");
-            userId.focus();
-            return false;
-        }
 		return true;
     }

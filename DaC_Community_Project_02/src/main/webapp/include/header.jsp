@@ -75,14 +75,15 @@ if (session.getAttribute("userEmail") != null){
                             <li><a href="/">HOME</a></li>
                             <li><a href="../bbs/bbs.jsp">자유게시판</a></li>
                             <li><a href="#">사진게시판</a></li>
+                            <li><a href="#">실종신고</a></li>
                             <li><a href="#">문의사항</a></li>
                         </ul>
                     </nav>
                 </div>
-                <div class="search">
+                <!--<div class="search">
                     <input type="text" id="search" placeholder="검색어 입력" style="float: right; width: 100%; border: 1px solid #bbb; border-radius: 8px; padding: 10px 12px; font-size: 14px;">
                     <img src="../img/free-icon-font-search-3917132.png" alt="search" style="position : absolute; width: 17px; bottom: 10px; left: 170px;">
-                </div>
+                </div>-->
                 <div class="login">
                 	<%
                 		if(rq_userEmail == null){

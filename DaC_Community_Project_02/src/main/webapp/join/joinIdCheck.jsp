@@ -45,7 +45,7 @@ if (result == 1){
  <script type="text/javascript">
     function result(){
     	opener.document.joinForm.userEmail.value = document.wfr.userEmail.value;
-    	opener.document.joinForm.userEmail.readOnly=true;
+    	opener.document.joinForm.userEmail.readOnly = true;
     	opener.document.joinForm.idDuplication.value = "true";
  	  	window.close();  	
     }

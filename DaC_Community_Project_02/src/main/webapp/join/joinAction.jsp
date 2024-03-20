@@ -3,13 +3,12 @@
 <%@ page import = "user.UserDAO" %>
 <%@ page import = "java.io.PrintWriter" %>
 <% request.setCharacterEncoding("UTF-8"); %>
- 
 <jsp:useBean id="user" class="user.User" scope="page"></jsp:useBean>
 <jsp:setProperty name="user" property="userEmail"/>
 <jsp:setProperty name="user" property="userPassword"/>
 <jsp:setProperty name="user" property="userName"/>
 <jsp:setProperty name="user" property="userAddr"/>
-<jsp:setProperty name="user" property="userId"/>
+<jsp:setProperty name="user" property="userLevel"/>
  
 <head>
 	<meta charset="UTF-8">
@@ -28,7 +27,7 @@
            PrintWriter script = response.getWriter();
            script.println("<script>");
            script.println("alert('가입이 완료되었습니다.')");
-           script.println("location.href = '../main.jsp'");    // 메인 페이지로 이동
+           script.println("location.href = '/'");    // 메인 페이지로 이동
            script.println("</script>");
        }
     %>

@@ -5,7 +5,7 @@ public class User {
 	private String userPassword;
 	private String userName;
 	private String userAddr;
-	private String userId;
+	private String userLevel;
 	
 	
 	public String getUserEmail() {
@@ -39,22 +39,23 @@ public class User {
 	public void setUserAddr(String userAddr) {
 		this.userAddr = userAddr;
 	}
-	
-	public String getUserId() {
-		return userId;
+
+	public String getUserLevel() {
+		return userLevel;
 	}
-	
-	public void setUserId(String userId) {
-		this.userId =userId;
+
+	public void setUserLevel(String userLevel) {
+		this.userLevel = userLevel;
 	}
 
 	@Override
 	public String toString() {
 		return "User [userEmail=" + userEmail + ", userPassword=" + userPassword + ", userName=" + userName
-				+ ", userAddr=" + userAddr + ", userId=" + userId + "]";
+				+ ", userAddr=" + userAddr + ", userLevel=" + userLevel + "]";
 	}
 	
-	// 로그인 정보 담을 객체
+
+	
     
 	
 }

@@ -15,7 +15,7 @@
     <%
 	    String userEmail = null;
 	    if (session.getAttribute("userEmail") != null){
-	    	userEmail = (String) session.getAttribute("userEmail");
+	    	userEmail = (String)session.getAttribute("userEmail");
 	    }
 	    if (userEmail != null){
 	        PrintWriter script = response.getWriter();

@@ -37,9 +37,6 @@
 	                  <button type="button" id="btn2" onclick="openZipSearch()">주소 검색</button>
 	              </div>
 	              <div class="form-group">
-	                  <input type="text" id="userId" name="userId" placeholder="사용할 별명을 입력하세요.">
-	              </div>
-	              <div class="form-group">
 	                  <input type="submit" value="가입하기">
 	              </div>
 	          </form>

@@ -28,13 +28,13 @@ public class UserDAO {
 	}
 	// 로그인 기능 
 	public String login(String userEmail, String userPassword) {
-		String SQL = "SELECT userEmail, userPassword, userId FROM user WHERE userEmail = ?";
+		String SQL = "SELECT userEmail, userPassword FROM user WHERE userEmail = ?";
 		try {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, userEmail);
 			rs = pstmt.executeQuery(); // 쿼리 실행 
 
-			if (rs.next()) {
+			if(rs.next()) {
 				if (rs.getString(2).equals(userPassword)) { // rs.getString(1) : select된 첫번째 컬럼
 					return "1"; //로그인 성공
 				}else {
@@ -57,7 +57,7 @@ public class UserDAO {
 			pstmt.setString(2, user.getUserPassword());
 			pstmt.setString(3, user.getUserName());
 			pstmt.setString(4, user.getUserAddr());
-			pstmt.setString(5, user.getUserId());
+			pstmt.setString(5, "1");      // 1 : 일반 유저  || 2 : 관리자
 			return pstmt.executeUpdate(); // 0이상 값이 return된 경우 성공 
 		}catch(Exception e) {
 			e.printStackTrace();
