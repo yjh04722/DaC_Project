@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import = "user.UserDAO" %>
 <%@ page import = "java.io.PrintWriter" %>
 <% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
@@ -10,9 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- jQuery -->
-    <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="http://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        	
     <!-- javascript -->
     <script src="../js/index.js"></script>
     <script src="../js/join.js"></script>
@@ -32,6 +32,8 @@
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/join.css">
     <link rel="stylesheet" href="../css/bbs.css">
+    <link rel="stylesheet" href="../css/photo.css">
+    
   
     <title>Dog & Cat Community</title>
 
@@ -74,7 +76,7 @@ if (session.getAttribute("userEmail") != null){
                         <ul style="padding-top: 25px;">
                             <li><a href="/">HOME</a></li>
                             <li><a href="../bbs/bbs.jsp">자유게시판</a></li>
-                            <li><a href="#">사진게시판</a></li>
+                            <li><a href="../photobbs/photobbs.jsp">사진게시판</a></li>
                             <li><a href="#">실종신고</a></li>
                             <li><a href="#">문의사항</a></li>
                         </ul>

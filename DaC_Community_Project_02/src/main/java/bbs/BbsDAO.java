@@ -23,6 +23,7 @@ public class BbsDAO {
 		}
 	}
 	
+	// 날짜 구하기
 	public String getDate() {
 		String SQL = "SELECT NOW()";
 		try {
@@ -37,6 +38,7 @@ public class BbsDAO {
 		return ""; //DB 오류 
 	}
 	
+	// 게시글 인덱스
 	public int getNext() {
 		String SQL = "SELECT bbsId FROM bbs ORDER BY bbsId DESC";
 		try {
@@ -95,28 +97,28 @@ public class BbsDAO {
 	}
 	
 	//게시글수 5개제한
-		public ArrayList<Bbs> getList2(int pageNumber){
-			String SQL = "SELECT * FROM bbs WHERE bbsId < ? AND bbsAvailable = 1 ORDER BY bbsID DESC LIMIT 5";
-			ArrayList<Bbs> list = new ArrayList<Bbs>();
-			try {
-				PreparedStatement pstmt = conn.prepareStatement(SQL);
-				pstmt.setInt(1, getNext()-( pageNumber - 1 ) * 10);
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					Bbs bbs = new Bbs();
-					bbs.setBbsId(rs.getInt(1));
-					bbs.setBbsTitle(rs.getString(2));
-					bbs.setUserId(rs.getString(3));
-					bbs.setBbsDate(rs.getString(4));
-					bbs.setBbsContent(rs.getString(5));
-					bbs.setBbsAvailable(rs.getInt(6));
-					list.add(bbs);
-				}
-			}catch(Exception e) {
-				e.printStackTrace();
+	public ArrayList<Bbs> getList2(int pageNumber){
+		String SQL = "SELECT * FROM bbs WHERE bbsId < ? AND bbsAvailable = 1 ORDER BY bbsID DESC LIMIT 5";
+		ArrayList<Bbs> list = new ArrayList<Bbs>();
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, getNext()-( pageNumber - 1 ) * 10);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Bbs bbs = new Bbs();
+				bbs.setBbsId(rs.getInt(1));
+				bbs.setBbsTitle(rs.getString(2));
+				bbs.setUserId(rs.getString(3));
+				bbs.setBbsDate(rs.getString(4));
+				bbs.setBbsContent(rs.getString(5));
+				bbs.setBbsAvailable(rs.getInt(6));
+				list.add(bbs);
 			}
-			return list; 
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
+		return list; 
+	}
 	
 	// 해당 페이지로 넘어갈 수 있는지 검사 
 	public boolean nextPage(int pageNumber){
@@ -134,6 +136,7 @@ public class BbsDAO {
 		return false; 
 	}
 	
+	// 게시글 조회
 	public Bbs getBbs(int bbsId){
 		String SQL = "SELECT * FROM bbs WHERE bbsId = ?"; 
         try {
