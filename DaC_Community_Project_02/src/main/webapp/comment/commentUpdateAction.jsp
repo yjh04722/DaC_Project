@@ -13,6 +13,8 @@
 </head>
 <body>
 <%
+	String code = request.getParameter("code");
+
 	String userEmail = null;
 	if(session.getAttribute("userEmail")!= null){
 		userEmail = (String)session.getAttribute("userEmail");
@@ -44,7 +46,7 @@
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('권한이 없습니다.')");
-		script.println("location.href='../bbs/bbs.jsp'");
+		script.println("location.href='/bbs/bbs.jsp'");
 		script.println("</script>");
 	} else{
 		if(request.getParameter("commentContent") == null){
@@ -55,7 +57,7 @@
 				script.println("</script>");
 			}else{
 				CommentDAO commentDAO = new CommentDAO();//하나의 인스턴스
-				int result = commentDAO.update(bbsId, commentId, request.getParameter("commentContent"));
+				int result = commentDAO.update(bbsId, commentId, request.getParameter("commentContent"), code);
 				
 				if(result == -1){//데이터 베이스 오류가 날 때
 					PrintWriter script = response.getWriter();
@@ -68,7 +70,7 @@
 					PrintWriter script=response.getWriter();
 					script.println("<script>");
 					script.println("alert('댓글 수정에 성공했습니다.')");
-					script.println("location.href= \'../bbs/view.jsp?bbsId="+bbsId+"\'");
+					script.println("location.href= \'/bbs/view.jsp?bbsId="+bbsId+"&code="+code+"\'");
 					script.println("</script>");
 				}
 	}

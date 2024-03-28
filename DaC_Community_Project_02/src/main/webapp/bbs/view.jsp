@@ -20,12 +20,27 @@ pageEncoding="UTF-8"%>
 </head>
 <body>
 	<%
+		String code = request.getParameter("code"); //db : table 명
+		// 게시판 이름
+		String bbs_title = "";
+		if(code != null &&  code.equals("bbs")){
+			bbs_title = "자유게시판";
+		}else if(code != null && code.equals("photobbs")){
+			bbs_title = "사진게시판";
+		}else if(code != null && code.equals("missingbbs")){
+			bbs_title = "실종신고";
+		}else if(code != null && code.equals("qnabbs")){
+			bbs_title = "문의사항";
+		}
+		
+		// 로그인 검증
 		String userEmail = null;
 	
 		if(session.getAttribute("userEmail") != null){
 			userEmail = (String)session.getAttribute("userEmail");
 		}
 		
+		// 게시글 번호
 		int bbsId = 0;
 		
 		if(request.getParameter("bbsId") != null){
@@ -35,7 +50,7 @@ pageEncoding="UTF-8"%>
 			PrintWriter script=response.getWriter();
 			script.println("<script>");
 			script.println("alert('유효하지 않은 글입니다.')");
-			script.println("location.href='../bbs/bbs.jsp'");
+			script.println("location.href='/bbs/bbs.jsp'");
 			script.println("</script>");
 		}
 		
@@ -87,6 +102,7 @@ pageEncoding="UTF-8"%>
 						<br>
 						<br>
 						<br>
+						<!-- 댓글 부분 -->
                         <table class="table table-striped">
 							<tr>
 								<td><b>작성자</b></td>
@@ -97,22 +113,22 @@ pageEncoding="UTF-8"%>
 							<tr>
 						<%
                             CommentDAO commentDAO = new CommentDAO();
-                            ArrayList<Comment> list = commentDAO.getList(bbsId);
+                            ArrayList<Comment> list = commentDAO.getList(bbsId, code);
                             for(int i=0; i<list.size(); i++){
 						%>
                             <tr>
-                                <td align="left"><img src="../img/arrow-turn-down-right-9247304.png" alt="" style="weight:15px; height:15px">&nbsp;&nbsp;<%= list.get(i).getUserId() %></td>
+                                <td align="left"><img src="/img/arrow-turn-down-right-9247304.png" alt="" style="weight:15px; height:15px">&nbsp;&nbsp;<%= list.get(i).getUserId() %></td>
                                 <td align="left"><%= list.get(i).getCommentContent() %></td>
                                 <td align="right"><%= list.get(i).getCommentDate().substring(0,11)+list.get(i).getCommentDate().substring(11,13)+"시"+list.get(i).getCommentDate().substring(14,16)+"분" %></td>
-                                <td align="right"><a href="../comment/commentUpdate.jsp?bbsId=<%=bbsId%>&commentId=<%=list.get(i).getCommentId()%>" class="btn btn-warning">수정</a>
-                                <a onclick="return confirm('정말로 삭제하시겠습니까?')" href="../comment/commentDeleteAction.jsp?bbsId=<%=bbsId%>&commentId=<%=list.get(i).getCommentId() %>" class="btn btn-danger">삭제</a></td>
+                                <td align="right"><a href="/comment/commentUpdate.jsp?bbsId=<%=bbsId%>&commentId=<%=list.get(i).getCommentId()%>&code=<%=code%>" class="btn btn-warning">수정</a>
+                                <a onclick="return confirm('정말로 삭제하시겠습니까?')" href="/comment/commentDeleteAction.jsp?bbsId=<%=bbsId%>&commentId=<%=list.get(i).getCommentId()%>&code=<%=code%>" class="btn btn-danger">삭제</a></td>
                             </tr>
 						<%
 							}
 						%>
-                            </tr>
+                        	</tr>
 					</table>
-			        <form method="post" action="../comment/commentAction.jsp?bbsId=<%=bbsId %>" class="comment_write">
+			        <form method="post" action="/comment/commentAction.jsp?bbsId=<%=bbsId %>&code=<%=code %>" class="comment_write">
                         <input type="text" class="form-control" placeholder="댓글 쓰기" name="commentContent" maxlength="300">
                         <input type="submit" class="btn btn-success pull-right" value="댓글 쓰기">
                     </form>

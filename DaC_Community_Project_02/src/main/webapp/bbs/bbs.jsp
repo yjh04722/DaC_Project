@@ -17,15 +17,31 @@
 </style>
 </head>
 <body>
-    <% 
-    String userEmail = null; // 로그인이 된 사람들은 로그인정보를 담을 수 있도록한다
-    if (session.getAttribute("userEmail") != null){
-        userEmail = (String)session.getAttribute("userEmail");
-    }
-    int pageNumber = 1; // 기본페이지 기본적으로 페이지 1부터 시작하므로
-    if (request.getParameter("pageNumber") != null){
-    	pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-    }
+	<%
+		String code = request.getParameter("code"); //db : table 명
+		// 게시판 이름
+		String bbs_title = "";
+		if(code != null &&  code.equals("bbs")){
+			bbs_title = "자유게시판";
+		}else if(code != null && code.equals("photobbs")){
+			bbs_title = "사진게시판";
+		}else if(code != null && code.equals("missingbbs")){
+			bbs_title = "실종신고";
+		}else if(code != null && code.equals("qnabbs")){
+			bbs_title = "문의사항";
+		}
+
+	    String userEmail = null; // 로그인이 된 사람들은 로그인정보를 담을 수 있도록한다
+	    if (session.getAttribute("userEmail") != null){
+	        userEmail = (String)session.getAttribute("userEmail");
+	    }
+	    
+	    
+	    
+	    int pageNumber = 1; // 기본페이지 기본적으로 페이지 1부터 시작하므로
+	    if (request.getParameter("pageNumber") != null){
+	    	pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+	    }
     %>
 	<table style="width: 100%; height: 50px;">
     <tr>
@@ -46,11 +62,11 @@
 		   	    			<%
 		   	    				BbsDAO bbsDAO = new BbsDAO();
 		   	    				ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
-		   	    				for (int i =0; i<list.size(); i++){
+		   	    				for (int i =0; i < list.size(); i++){
 		   	    			%>
 		   	    			<tr>
 		   	    				<td><%=list.get(i).getBbsId()%></td>
-		   	    				<td><a href ="./view.jsp?bbsId=<%=list.get(i).getBbsId()%>"><%=list.get(i).getBbsTitle().replaceAll(" ","&nbsp;").replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n","<br>")%></a></td>
+		   	    				<td><a href ="./view.jsp?bbsId=<%=list.get(i).getBbsId()%>&code=<%=list.get(i).getCode()%>"><%=list.get(i).getBbsTitle().replaceAll(" ","&nbsp;").replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n","<br>")%></a></td>
 		   	    				<td><%=list.get(i).getUserId()%></td>
 		   	    				<td><%=list.get(i).getBbsDate().substring(0, 11) + list.get(i).getBbsDate().substring(11, 13) + "시" + list.get(i).getBbsDate().substring(14, 16) + "분" %></td>
 		   	    			</tr>
@@ -71,7 +87,7 @@
 		    	    	}
 		    	    %>
 		    	    
-		    	    <a href= "../bbs/bbsWrite.jsp" class= "btn btn-primary pull-right">글쓰기</a>
+		    	    <a href= "/bbs/bbsWrite.jsp?code=<%=code%>" class= "btn btn-primary pull-right">글쓰기</a>
 		    	</div>
 	    </div>
       </td>

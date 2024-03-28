@@ -11,6 +11,20 @@
 	<meta charset="UTF-8">
 </head>
 <body>
+	<%
+		String code = request.getParameter("code");; //db : table 명
+		// 게시판 이름
+		String bbs_title = "";
+		if(code != null &&  code.equals("bbs")){
+			bbs_title = "자유게시판";
+		}else if(code != null && code.equals("photobbs")){
+			bbs_title = "사진게시판";
+		}else if(code != null && code.equals("missingbbs")){
+			bbs_title = "실종신고";
+		}else if(code != null && code.equals("qnabbs")){
+			bbs_title = "문의사항";
+		}
+	%>
 	 <%
       String userEmail = null;
       if(session.getAttribute("userEmail")!=null){
@@ -21,20 +35,20 @@
          PrintWriter script=response.getWriter();
          script.println("<script>");
          script.println("alert('로그인을 하세요')");
-         script.println("location.href='../login/login.jsp'");
+         script.println("location.href='/login/login.jsp'");
          script.println("</script>");
     	}else{
            int bbsId = 0; 
            
            if (request.getParameter("bbsId") != null){
-              bbsId = Integer.parseInt(request.getParameter("bbsId"));
+              bbsId = Integer.parseInt(request.getParameter("bbsId")); 
            }
          
            if (bbsId == 0){
               PrintWriter script = response.getWriter();
               script.println("<script>");
               script.println("alert('유효하지 않은 글입니다.')");
-              script.println("location.href = '../login/login.jsp'");
+              script.println("location.href = '/login/login.jsp'");
               script.println("</script>");
            }
            if (comment.getCommentContent() == null){
@@ -46,8 +60,7 @@
            	  }else {
            		  
               CommentDAO commentDAO = new CommentDAO();
-              
-              int result = commentDAO.write(comment.getCommentContent(),userEmail, bbsId);
+              int result = commentDAO.write(comment.getCommentContent(),userEmail, bbsId, code);
               if (result == -1){
                  PrintWriter script = response.getWriter();
                  script.println("<script>");

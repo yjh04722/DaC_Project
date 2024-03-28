@@ -11,6 +11,8 @@
 </head>
 <body>
  <% 
+ 	String code = request.getParameter("code"); //db : table 명
+	
     String userEmail = null;
     if (session.getAttribute("userEmail") != null){
         userEmail = (String)session.getAttribute("userEmail");

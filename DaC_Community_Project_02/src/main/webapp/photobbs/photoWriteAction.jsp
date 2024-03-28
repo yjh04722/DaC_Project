@@ -68,7 +68,7 @@
 		 		PrintWriter script = response.getWriter();
 		 		script.println("<script>");
 		 		script.println("alert('글쓰기에 성공했습니다.')");
-				script.println("location.href= '../photobbs/photobbs.jsp'");
+				script.println("location.href= '../photobbs/photoBbs.jsp'");
 		 		script.println("</script>");
 			 }
      	}	

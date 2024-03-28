@@ -7,7 +7,16 @@ public class Comment {
 	private int commentAvailable;
 	private int bbsId;
 	private String commentDate;
-	
+	private String code;
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	public String getCommentContent() {
 		return commentContent;
 	}
@@ -54,12 +63,6 @@ public class Comment {
 	
 	public void setCommentDate(String commentDate) {
 		this.commentDate = commentDate;
-	}
-
-	@Override
-	public String toString() {
-		return "Comment [commentContent=" + commentContent + ", commentId=" + commentId + ", userId=" + userId
-				+ ", commentAvailable=" + commentAvailable + ", bbsId=" + bbsId + ", commentDate=" + commentDate + "]";
 	}
 	
 }

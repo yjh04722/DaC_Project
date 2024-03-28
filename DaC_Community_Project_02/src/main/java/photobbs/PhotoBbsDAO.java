@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import bbs.Bbs;
+
 public class PhotoBbsDAO {
 	private Connection conn; 
 	private ResultSet rs;
@@ -74,7 +76,32 @@ public class PhotoBbsDAO {
 		return ""; //DB 오류 
 	}
 	
-	// 이미지 목록보기 & 10행씩 반환(LIMIT)
+	// 게시글 조회
+	public PhotoBbs getPhotoBbs(int bbsId){
+		String SQL = "SELECT * FROM photobbs WHERE bbsId = ?"; 
+        try {
+	    		PreparedStatement pstmt = conn.prepareStatement(SQL);
+				pstmt.setInt(1, bbsId);
+				rs = pstmt.executeQuery();
+				if (rs.next())
+				{
+	                PhotoBbs photoBbs = new PhotoBbs();
+	                photoBbs.setBbsId(rs.getInt(1));
+	                photoBbs.setPhotoName(rs.getString(2));
+	                photoBbs.setUserId(rs.getString(3));
+	                photoBbs.setBbsDate(rs.getString(4));
+	                photoBbs.setBbsContent(rs.getString(5));
+	                photoBbs.setBbsAvailable(rs.getInt(6));
+	                photoBbs.setCode(rs.getString(7));
+	                return photoBbs;
+		        }
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+        return null; 
+    }
+	
+	// 이미지 목록보기 & 6행씩 반환(LIMIT)
 	public ArrayList<PhotoBbs> getList(int pageNumber){
 		String SQL = "SELECT * FROM photobbs WHERE bbsId < ? AND bbsAvailable = 1 ORDER BY bbsId DESC LIMIT 6";
 		ArrayList<PhotoBbs> list = new ArrayList<PhotoBbs>();
@@ -91,6 +118,7 @@ public class PhotoBbsDAO {
 				photoBbs.setBbsDate(rs.getString(4));
 				photoBbs.setBbsContent(rs.getString(5));
 				photoBbs.setBbsAvailable(rs.getInt(6));
+				photoBbs.setCode(rs.getString(7));
 				list.add(photoBbs);	
 			}
 		}catch(Exception e) {
@@ -99,28 +127,9 @@ public class PhotoBbsDAO {
 		return list;
 	}
 	
-	// 전체 행 수
-	public int selectPhotoTotalRow() {
-		int total = 0;
-		String SQL = "SELECT COUNT(*) as cnt FROM photobbs";
-		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQL);
-			System.out.println("[SQL selectPhotoTotalRow] : " + pstmt);
-			rs = pstmt.executeQuery();
-			if (rs.next()) {
-				total = rs.getInt("cnt");
-				
-				return total;
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return -1; //DB 오류 
-	}
-	
 	// 게시판 글작성 DB저장
 	public int write(String photoName, String userId, String bbsContent){
-		String SQL = "INSERT INTO photobbs VALUES (?, ?, ?, ?, ?, ?)";
+		String SQL = "INSERT INTO photobbs VALUES (?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
 			pstmt.setInt(1, getNext());
@@ -129,6 +138,20 @@ public class PhotoBbsDAO {
 			pstmt.setString(4, getDate());
 			pstmt.setString(5, bbsContent);
 			pstmt.setInt(6, 1);
+			pstmt.setString(7, "photobbs");
+			return pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1; //DB 오류 
+	}
+	
+	// 글 삭제
+	public int delete(int bbsId) {
+		String SQL = "UPDATE photobbs SET bbsAvailable = 0 WHERE bbsId = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, bbsId);
 			return pstmt.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -141,7 +164,7 @@ public class PhotoBbsDAO {
 		String SQL = "SELECT * FROM photobbs WHERE bbsId < ? AND bbsAvailable = 1";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
-			pstmt.setInt(1, getNext()-(pageNumber -1)*10);
+			pstmt.setInt(1, getNext()-(pageNumber -1) * 10);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				return true;

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/include/header.jsp" %>
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import="photobbs.PhotoBbsDAO" %>
@@ -34,6 +33,20 @@
 </style>
 </head>
 <body>
+	<%
+		String code = request.getParameter("code"); //db : table 명
+		// 게시판 이름
+		String bbs_title = "";
+		if(code != null &&  code.equals("bbs")){
+			bbs_title = "자유게시판";
+		}else if(code != null && code.equals("photobbs")){
+			bbs_title = "사진게시판";
+		}else if(code != null && code.equals("missingbbs")){
+			bbs_title = "실종신고";
+		}else if(code != null && code.equals("qnabbs")){
+			bbs_title = "문의사항";
+		}
+	%>
     <% 
     String userEmail = null; // 로그인이 된 사람들은 로그인정보를 담을 수 있도록한다
     if (session.getAttribute("userEmail") != null){
@@ -58,7 +71,7 @@
 		<div class= "row">
 		    <table class= "table table-stripped" style= "text-align: center; boarder: 1px solid #dddddd">
 					<tr>
-						<td><img src="../bbsUpload/<%=list.get(i).getPhotoName()%>" style="width:250px; display:inline;"></td>
+						<td><a href ="./photoView.jsp?bbsId=<%=list.get(i).getBbsId()%>&code=<%=list.get(i).getCode()%>"><img src="../bbsUpload/<%=list.get(i).getPhotoName()%>" style="width:250px; display:inline;"></a></td>
 					</tr>
 					<tr>
 						<td><%=list.get(i).getUserId()%></td>
@@ -66,9 +79,9 @@
 			    </table>
 			</div>
 		</div>
-		  	<%
+	<%
 		}
-		%>
+	%>
 		<div class="btn_all">
 			<%
     	    	if(pageNumber != 1){

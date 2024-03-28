@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class BbsDAO {
 	private Connection conn; 
 	private ResultSet rs;
-	PreparedStatement pstmt;
+
 	
 	public BbsDAO() {
 		try {
@@ -56,7 +56,7 @@ public class BbsDAO {
 
 	// 게시판 글작성 DB저장
 	public int write(String bbsTitle, String userId, String bbsContent){
-		String SQL = "INSERT INTO BBS VALUES (?, ?, ?, ?, ?, ?)";
+		String SQL = "INSERT INTO BBS VALUES (?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
 			pstmt.setInt(1, getNext());
@@ -65,6 +65,7 @@ public class BbsDAO {
 			pstmt.setString(4, getDate());
 			pstmt.setString(5, bbsContent);
 			pstmt.setInt(6, 1);
+			pstmt.setString(7, "bbs");
 			return pstmt.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -88,6 +89,7 @@ public class BbsDAO {
 				bbs.setBbsDate(rs.getString(4));
 				bbs.setBbsContent(rs.getString(5));
 				bbs.setBbsAvailable(rs.getInt(6));
+				bbs.setCode(rs.getString(7));
 				list.add(bbs);
 			}
 		}catch(Exception e) {
@@ -112,6 +114,7 @@ public class BbsDAO {
 				bbs.setBbsDate(rs.getString(4));
 				bbs.setBbsContent(rs.getString(5));
 				bbs.setBbsAvailable(rs.getInt(6));
+				bbs.setCode(rs.getString(7));
 				list.add(bbs);
 			}
 		}catch(Exception e) {
@@ -152,6 +155,7 @@ public class BbsDAO {
 	                bbs.setBbsDate(rs.getString(4));
 	                bbs.setBbsContent(rs.getString(5));
 	                bbs.setBbsAvailable(rs.getInt(6));
+	                bbs.setCode(rs.getString(7));
 	                return bbs;
 		        }
         } catch (Exception e) {

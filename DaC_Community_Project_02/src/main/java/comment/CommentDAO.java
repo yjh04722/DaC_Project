@@ -57,8 +57,8 @@ public class CommentDAO {
 		return -1;//데이터베이스 오류
 	}
 	
-	public int write(String commentContent, String userId, int bbsId) {
-		String SQL="insert into comment VALUES (?, ?, ?, ?, ?, ?)";
+	public int write(String commentContent, String userId, int bbsId, String code) {
+		String SQL="insert into comment VALUES (?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
 			pstmt.setString(1, commentContent);
@@ -67,6 +67,8 @@ public class CommentDAO {
 			pstmt.setInt(4, 1);
 			pstmt.setString(5, getDate());
 			pstmt.setInt(6, bbsId);
+			pstmt.setString(7, code);
+			
 			return pstmt.executeUpdate();
 			
 		} catch(Exception e) {
@@ -75,12 +77,13 @@ public class CommentDAO {
 		return -1;//데이터베이스 오류
 	}
 
-	public ArrayList<Comment> getList(int bbsId){//특정한 리스트를 받아서 반환
-		String SQL="SELECT * from comment where bbsId = ? AND commentAvailable = 1 order by bbsId desc limit 10";//마지막 게시물 반환, 삭제가 되지 않은 글만 가져온다.
+	public ArrayList<Comment> getList(int bbsId, String code){//특정한 리스트를 받아서 반환
+		String SQL="SELECT * from comment where bbsId = ? AND code = ? AND commentAvailable = 1 order by bbsId desc limit 10";//마지막 게시물 반환, 삭제가 되지 않은 글만 가져온다.
 		ArrayList<Comment> list = new ArrayList<Comment>();
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
 			pstmt.setInt(1, bbsId);
+			pstmt.setString(2, code);
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				Comment comment = new Comment();
@@ -120,13 +123,14 @@ public class CommentDAO {
 		return null;
 	}
 	
-	public int update(int bbsId, int commentId,String commentContent ) {
-		String SQL="update comment set commentContent = ? where bbsID = ? and commentID = ?";//특정한 아이디에 해당하는 제목과 내용을 바꿔준다. 
+	public int update(int bbsId, int commentId,String commentContent, String code) {
+		String SQL="update comment set commentContent = ? where bbsID = ? and commentID = ? and code = ?";//특정한 아이디에 해당하는 제목과 내용을 바꿔준다. 
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
 			pstmt.setString(1, commentContent);//물음표의 순서
 			pstmt.setInt(2, bbsId);
 			pstmt.setInt(3, commentId);
+			pstmt.setString(4, code);
 			return pstmt.executeUpdate();//insert,delete,update			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -134,11 +138,12 @@ public class CommentDAO {
 		return -1;//데이터베이스 오류
 	}
 	
-	public int delete(int commentId) {
-		String SQL = "update COMMENT set commentAvailable = 0 where commentId = ?";
+	public int delete(int commentId, String code) {
+		String SQL = "update COMMENT set commentAvailable = 0 where commentId = ? and code = ?";
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
 			pstmt.setInt(1, commentId);
+			pstmt.setString(2, code);
 			return pstmt.executeUpdate();			
 		} catch(Exception e) {
 			e.printStackTrace();

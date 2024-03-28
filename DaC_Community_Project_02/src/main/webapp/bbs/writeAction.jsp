@@ -7,6 +7,7 @@
 <jsp:useBean id="bbs" class="bbs.Bbs" scope="page"></jsp:useBean>
 <jsp:setProperty name="bbs" property="bbsTitle"/>
 <jsp:setProperty name="bbs" property="bbsContent"/>
+<jsp:setProperty name="bbs" property="code"/>
 
 <!DOCTYPE html>
 <html>
@@ -23,7 +24,7 @@
          PrintWriter script = response.getWriter();
          script.println("<script>");
          script.println("alert('로그인하세요.')");
-         script.println("location.href = '../login/login.jsp'");    // 메인 페이지로 이동
+         script.println("location.href = '/login/login.jsp'");    // 메인 페이지로 이동
          script.println("</script>");
  	}else{
  		if (bbs.getBbsTitle() == null || bbs.getBbsContent() == null){
@@ -44,6 +45,7 @@
              }else{ // 글쓰기 성공시
              	PrintWriter script = response.getWriter();
                  script.println("<script>");
+                 script.println("alert('게시글이 작성되었습니다.')");
                  script.println("location.href = 'bbs.jsp'");    // 메인 페이지로 이동
                  script.println("</script>");    
              }
