@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="bbs.BbsDAO" %>
-<%@ page import="bbs.Bbs" %>
+<%@ page import="photobbs.PhotoBbsDAO" %>
+<%@ page import="photobbs.PhotoBbs" %>
 <%@ page import = "java.io.PrintWriter" %>
 <% request.setCharacterEncoding("UTF-8"); %>
 
@@ -11,7 +11,12 @@
 <meta charset="UTF-8">
 </head>
 <body>
-<%
+<%	
+	//전역 변수
+	String bbsContent = (String)request.getParameter("bbsContent");
+	String photoName = (String)request.getParameter("photoName");
+
+
 	// 세션에 저장된 아이디와 레벨 불러옴
 	String userEmail = null;
 	String userLevel = null;
@@ -34,33 +39,35 @@
 	int bbsId = 0;
 	if (request.getParameter("bbsId") != null){
 		bbsId = Integer.parseInt(request.getParameter("bbsId"));
+	}else{
+		System.out.println(request.getParameter("bbsId"));
 	}
+	
 	if (bbsId == 0)
     {
         PrintWriter script = response.getWriter();
         script.println("<script>");
         script.println("alert('유효하지 않은 글입니다')");
-        script.println("location.href = './bbs.jsp'");
+        script.println("location.href = './photoBbs.jsp'");
         script.println("</script>");
     }
-    Bbs bbs = new BbsDAO().getBbs(bbsId);
-    if (!userEmail.equals(bbs.getUserId()) && userLevel.equals("1")){
+    PhotoBbs photBbs = new PhotoBbsDAO().getPhotoBbs(bbsId);
+    if (!userEmail.equals(photBbs.getUserId()) && userLevel.equals("1")){
     	PrintWriter script = response.getWriter();
         script.println("<script>");
         script.println("alert('권한이 없습니다.')");
-        script.println("location.href = 'bbs.jsp'");
+        script.println("location.href = './photoBbs.jsp'");
         script.println("</script>");
     }else{
-		if (request.getParameter("bbsTitle") == null || request.getParameter("bbsContent") == null
-				|| request.getParameter("bbsTitle").equals("") || request.getParameter("bbsContent").equals("")){
+    	if (photoName == null || bbsContent == null || photoName.equals("") || bbsContent.equals("")){
     		PrintWriter script = response.getWriter();
             script.println("<script>");
             script.println("alert('모든 문항을 입력해주세요.')");
             script.println("history.back()");    // 이전 페이지로 사용자를 보냄
             script.println("</script>");
     	}else{
-    		BbsDAO bbsDAO = new BbsDAO();
-            int result = bbsDAO.update(bbsId, request.getParameter("bbsTitle"), request.getParameter("bbsContent"));
+    		PhotoBbsDAO photoBbsDAO = new PhotoBbsDAO();
+            int result = photoBbsDAO.update(bbsId, bbsContent, photoName);
             if (result == -1){ // 글수정 실패시
                 PrintWriter script = response.getWriter();
                 script.println("<script>");
@@ -71,12 +78,11 @@
             	PrintWriter script = response.getWriter();
                 script.println("<script>");
                 script.println("alert('게시글을 수정하였습니다.')");
-                script.println("location.href = './bbs.jsp'");    // 메인 페이지로 이동
+                script.println("location.href = './photoBbs.jsp'");    // 메인 페이지로 이동
                 script.println("</script>");    
             }
     	}	
 	}
 %>
- 
 </body>
 </html>

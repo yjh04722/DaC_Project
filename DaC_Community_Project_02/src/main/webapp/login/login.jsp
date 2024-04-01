@@ -23,7 +23,8 @@
                    <div class="form-group">
                        <input type="password" id="userPassword" name="userPassword" placeholder="비밀번호을 입력하세요." style="width:410px;">
                    </div>
-                       <div class="form-group">
+                   <div class="form-group">
+                       <input type="hidden" id="userLevel" name="userLevel">
                        <input type="submit" value="로그인" />
                    </div>
                </form>

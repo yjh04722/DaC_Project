@@ -13,15 +13,19 @@
  <% 
  	String code = request.getParameter("code"); //db : table 명
 	
+ 	// 세션에 저장된 아이디와 레벨 불러옴
     String userEmail = null;
+ 	String userLevel = null;
     if (session.getAttribute("userEmail") != null){
         userEmail = (String)session.getAttribute("userEmail");
+        userLevel = (String)session.getAttribute("userLevel");
     }
+    
     if (userEmail == null){
     	PrintWriter script = response.getWriter();
         script.println("<script>");
         script.println("alert('로그인하세요.')");
-        script.println("location.href = '../login/login.jsp'");
+        script.println("location.href = '/login/login.jsp'");
         script.println("</script>");
     }
 %>

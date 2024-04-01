@@ -14,26 +14,31 @@
 <body>
     <%
 	    String userEmail = null;
+    	String userLevel = null;
+    	
 	    if (session.getAttribute("userEmail") != null){
 	    	userEmail = (String)session.getAttribute("userEmail");
+	    	userLevel = (String)session.getAttribute("userLevel");
+	    	
 	    }
 	    if (userEmail != null){
 	        PrintWriter script = response.getWriter();
 	        script.println("<script>");
 	        script.println("alert('이미 로그인되었습니다.')");
-	        script.println("location.href = '../main.jsp'");    // 메인 페이지로 이동
+	        script.println("location.href = '/'");    // 메인 페이지로 이동
 	        script.println("</script>");
 	    }
 	    
 	    UserDAO userDAO = new UserDAO();
 	    
 	    String result = userDAO.login(user.getUserEmail(), user.getUserPassword());
-	    if (result.equals("1")){
+	    if (result.equals("1") || result.equals("2")){
 	    	session.setAttribute("userEmail", user.getUserEmail());
+	    	session.setAttribute("userLevel", result);
 	        PrintWriter script = response.getWriter();
 	        script.println("<script>");
 	        script.println("alert('환영합니다.')");
-	        script.println("location.href = '../index.jsp'");
+	        script.println("location.href = '/'");
 	        script.println("</script>");
 	    }
 	    else if (result.equals("0")){

@@ -9,10 +9,15 @@
 <html>
 <body>
 <%
+	// 세션에 저장된 아이디와 레벨 불러옴
 	String userEmail = null;
+	String userLevel = null;
+	
 	if (session.getAttribute("userEmail") != null){
-        userEmail = (String)session.getAttribute("userEmail");
+	    userEmail = (String)session.getAttribute("userEmail");
+	    userLevel = (String)session.getAttribute("userLevel");
 	}
+	
 	if (userEmail == null){
         PrintWriter script = response.getWriter();
         script.println("<script>");
@@ -33,7 +38,7 @@
         script.println("</script>");
     }
     PhotoBbs photoBbs = new PhotoBbsDAO().getPhotoBbs(bbsId);
-    if (!userEmail.equals(photoBbs.getUserId())){
+    if (!userEmail.equals(photoBbs.getUserId()) && userLevel.equals("1")){
     	PrintWriter script = response.getWriter();
         script.println("<script>");
         script.println("alert('권한이 없습니다.')");

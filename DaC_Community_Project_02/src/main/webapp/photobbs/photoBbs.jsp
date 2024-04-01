@@ -35,6 +35,8 @@
 <body>
 	<%
 		String code = request.getParameter("code"); //db : table 명
+		PhotoBbsDAO photoBbsDAO = new PhotoBbsDAO();
+		
 		// 게시판 이름
 		String bbs_title = "";
 		if(code != null &&  code.equals("bbs")){
@@ -46,32 +48,46 @@
 		}else if(code != null && code.equals("qnabbs")){
 			bbs_title = "문의사항";
 		}
+
+		// 세션에 저장된 아이디와 레벨 불러옴
+		String userEmail = null;
+		String userLevel = null;
+		
+		if (session.getAttribute("userEmail") != null){
+		    userEmail = (String)session.getAttribute("userEmail");
+		    userLevel = (String)session.getAttribute("userLevel");
+		}
+		
+		// 총 게시글 수
+		int cnt = photoBbsDAO.getCount();
+		
+		// 한 페이지에 출력될 글 수
+		int pageSize = 6; 
+  
+		// 현 페이지 정보 설정
+	    String pageNum = request.getParameter("pageNum");
+	    if (pageNum == null){
+	    		pageNum = "1";
+	    }
+		
+	    int currentPage = Integer.parseInt(pageNum);
+		int startRow = (currentPage - 1) * pageSize + 1;
 	%>
-    <% 
-    String userEmail = null; // 로그인이 된 사람들은 로그인정보를 담을 수 있도록한다
-    if (session.getAttribute("userEmail") != null){
-        userEmail = (String)session.getAttribute("userEmail");
-    }
-    int pageNumber = 1; // 기본페이지 기본적으로 페이지 1부터 시작하므로
-    if (request.getParameter("pageNumber") != null){
-    	pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-    }
-    %>
 	<table style="width: 100%; height: 50px;">
     <tr>
       <td style="width: 15%; height: 700px;"></td>
       <td style="width: 70%; height: 700px;">
-		
+      	<span style="margin-right: 1050px;"><b>총게시글 수 : </b><%=cnt %></span>
+      		
 		<%
-			PhotoBbsDAO photoBbsDAO = new PhotoBbsDAO();
-			ArrayList<PhotoBbs> list = photoBbsDAO.getList(pageNumber);
+			ArrayList<PhotoBbs> list = photoBbsDAO.getList(currentPage);
 			for (int i =0; i < list.size(); i++){
 		%>
-				  <div class= "container_img">
+	<div class= "container_img">
 		<div class= "row">
 		    <table class= "table table-stripped" style= "text-align: center; boarder: 1px solid #dddddd">
 					<tr>
-						<td><a href ="./photoView.jsp?bbsId=<%=list.get(i).getBbsId()%>&code=<%=list.get(i).getCode()%>"><img src="../bbsUpload/<%=list.get(i).getPhotoName()%>" style="width:250px; display:inline;"></a></td>
+						<td><a href ="./photoView.jsp?bbsId=<%=list.get(i).getBbsId()%>&code=<%=list.get(i).getCode()%>"><img src="../bbsUpload/<%=list.get(i).getPhotoName()%>" style="width:250px; height: 250px; display:inline;"></a></td>
 					</tr>
 					<tr>
 						<td><%=list.get(i).getUserId()%></td>
@@ -83,20 +99,36 @@
 		}
 	%>
 		<div class="btn_all">
-			<%
-    	    	if(pageNumber != 1){
-    	    %>		
-    	    		<a href= "photobbs.jsp?pageNumber=<%=pageNumber -1%>" class="btn btn-success btn-arraw-left">이전</a>
-    	    <% 
-    	    	}if(photoBbsDAO.nextPage(pageNumber + 1)){
-    	    %>		
-    	    		<a href= "photobbs.jsp?pageNumber=<%=pageNumber +1%>" class="btn btn-success btn-arraw-left">다음</a>
-    	    <% 
-    	    	}
-    	    %>
-		 
-		 <a href= "../photobbs/photoBbsWrite.jsp" class= "btn btn-primary pull-right">글쓰기</a>
-		 </div>
+			<a href= "../photobbs/photoBbsWrite.jsp" class= "btn btn-primary pull-right">글쓰기</a>
+		</div>
+		<ul class="pagination">
+		    	    <% 
+		    	    	if(cnt != 0){
+		    	    		int pageCount = cnt / pageSize + (cnt % pageSize == 0?0:1);
+		    	    		
+		    	    		// 한 페이지에 보여줄 페이지 블럭
+		    	    		int pageBlock = 10;
+		    	    		int startPage = ((currentPage - 1)/pageBlock) * pageBlock + 1;
+		    	    		
+		    	    		// 한 페이지에 보여줄 페이지 블럭 끝 번호 계산
+		    	    		int endPage = startPage + pageBlock - 1;
+		    	    		if(endPage > pageCount){
+		    	    			endPage = pageCount;
+		    	    		}
+					%>
+		    	    <% if(startPage > pageBlock){ %>
+		    	    	<li><a href="photBbs.jsp?pageNum=<%=startPage-pageBlock %>">Prev</a></li>
+		    	    <% } %>
+		    	    
+		    	     <% for(int i = startPage; i <= endPage; i++){ %>
+		    	    	<li><a href="photoBbs.jsp?pageNum=<%=i %>"><%=i %></a></li>
+		    	    <% } %>
+		    	    
+		    	     <% if(endPage < pageCount){ %>
+		    	    	<li><a href="photoBbs.jsp?pageNum=<%=startPage+pageBlock %>">Next</a></li>
+		    	    <% } %>	    	    	
+		    	    <%}  %>
+		 </ul>
       </td>
       <td style="width: 15%; height: 700px;"></td>
     </tr>

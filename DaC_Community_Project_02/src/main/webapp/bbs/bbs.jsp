@@ -19,6 +19,8 @@
 <body>
 	<%
 		String code = request.getParameter("code"); //db : table 명
+		BbsDAO bbsDAO = new BbsDAO();
+		
 		// 게시판 이름
 		String bbs_title = "";
 		if(code != null &&  code.equals("bbs")){
@@ -31,17 +33,29 @@
 			bbs_title = "문의사항";
 		}
 
-	    String userEmail = null; // 로그인이 된 사람들은 로그인정보를 담을 수 있도록한다
-	    if (session.getAttribute("userEmail") != null){
-	        userEmail = (String)session.getAttribute("userEmail");
+		// 세션에 저장된 아이디와 레벨 불러옴
+		String userEmail = null;
+		String userLevel = null;
+		
+		if (session.getAttribute("userEmail") != null){
+		    userEmail = (String)session.getAttribute("userEmail");
+		    userLevel = (String)session.getAttribute("userLevel");
+		}
+		
+		// 총 게시글 수
+		int cnt = bbsDAO.getCount();
+		
+		// 한 페이지에 출력될 글 수
+		int pageSize = 6; 
+  
+		// 현 페이지 정보 설정
+	    String pageNum = request.getParameter("pageNum");
+	    if (pageNum == null){
+	    		pageNum = "1";
 	    }
-	    
-	    
-	    
-	    int pageNumber = 1; // 기본페이지 기본적으로 페이지 1부터 시작하므로
-	    if (request.getParameter("pageNumber") != null){
-	    	pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-	    }
+		
+	    int currentPage = Integer.parseInt(pageNum);
+		int startRow = (currentPage - 1) * pageSize + 1;
     %>
 	<table style="width: 100%; height: 50px;">
     <tr>
@@ -49,6 +63,7 @@
       <td style="width: 70%; height: 700px;">
 		<div class= "container">
 		    	<div class= "row">
+		    		<span style="margin-right: 950px;"><b>총게시글 수 : </b><%=cnt %></span>
 		    	    <table class= "table table-stripped" style= "text-align: center; boarder: 1px solid #dddddd">
 		    	    	<thead>
 			    	    	<tr>
@@ -60,33 +75,50 @@
 		    	    	</thead>
 		    	    	<tbody>
 		   	    			<%
-		   	    				BbsDAO bbsDAO = new BbsDAO();
-		   	    				ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
+		   	    				ArrayList<Bbs> list = bbsDAO.getList(currentPage);
+		   	    				int num = cnt - ((currentPage - 1) * pageSize);
 		   	    				for (int i =0; i < list.size(); i++){
 		   	    			%>
 		   	    			<tr>
-		   	    				<td><%=list.get(i).getBbsId()%></td>
+		   	    				<td><%=num %></td>
 		   	    				<td><a href ="./view.jsp?bbsId=<%=list.get(i).getBbsId()%>&code=<%=list.get(i).getCode()%>"><%=list.get(i).getBbsTitle().replaceAll(" ","&nbsp;").replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n","<br>")%></a></td>
 		   	    				<td><%=list.get(i).getUserId()%></td>
 		   	    				<td><%=list.get(i).getBbsDate().substring(0, 11) + list.get(i).getBbsDate().substring(11, 13) + "시" + list.get(i).getBbsDate().substring(14, 16) + "분" %></td>
 		   	    			</tr>
 		   	    			<%
+		   	    					num--;
 		   	    				}
 		   	    			%>
 		    	    	</tbody>
 		    	    </table>
-		    	    <%
-		    	    	if(pageNumber != 1){
-		    	    %>		
-		    	    		<a href= "bbs.jsp?pageNumber=<%=pageNumber -1%>" class="btn btn-success btn-arraw-left">이전</a>
+		    	    <ul class="pagination">
 		    	    <% 
-		    	    	}if(bbsDAO.nextPage(pageNumber + 1)){
-		    	    %>		
-		    	    		<a href= "bbs.jsp?pageNumber=<%=pageNumber +1%>" class="btn btn-success btn-arraw-left">다음</a>
-		    	    <% 
-		    	    	}
-		    	    %>
+		    	    	if(cnt != 0){
+		    	    		int pageCount = cnt / pageSize + (cnt % pageSize == 0?0:1);
+		    	    		
+		    	    		// 한 페이지에 보여줄 페이지 블럭
+		    	    		int pageBlock = 10;
+		    	    		int startPage = ((currentPage - 1)/pageBlock) * pageBlock + 1;
+		    	    		
+		    	    		// 한 페이지에 보여줄 페이지 블럭 끝 번호 계산
+		    	    		int endPage = startPage + pageBlock - 1;
+		    	    		if(endPage > pageCount){
+		    	    			endPage = pageCount;
+		    	    		}
+					%>
+		    	    <% if(startPage > pageBlock){ %>
+		    	    	<li><a href="bbs.jsp?pageNum=<%=startPage-pageBlock %>">Prev</a></li>
+		    	    <% } %>
 		    	    
+		    	     <% for(int i = startPage; i <= endPage; i++){ %>
+		    	    	<li><a href="bbs.jsp?pageNum=<%=i %>"><%=i %></a></li>
+		    	    <% } %>
+		    	    
+		    	     <% if(endPage < pageCount){ %>
+		    	    	<li><a href="bbs.jsp?pageNum=<%=startPage+pageBlock %>">Next</a></li>
+		    	    <% } %>	    	    	
+		    	    <%}  %>
+		    	    </ul>
 		    	    <a href= "/bbs/bbsWrite.jsp?code=<%=code%>" class= "btn btn-primary pull-right">글쓰기</a>
 		    	</div>
 	    </div>

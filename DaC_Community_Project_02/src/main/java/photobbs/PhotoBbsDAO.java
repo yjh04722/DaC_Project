@@ -159,6 +159,21 @@ public class PhotoBbsDAO {
 		return -1; //DB 오류 
 	}
 	
+	// 글 업데이트
+	public int update(int bbsId, String bbsContent, String photoName) {	
+		String SQL = "UPDATE photobbs SET photoName = ?, bbsContent = ? WHERE bbsId = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, photoName);
+			pstmt.setString(2, bbsContent);
+			pstmt.setInt(3, bbsId);
+			return pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1; //DB 오류 
+	}
+	
 	// 해당 페이지로 넘어갈 수 있는지 검사 
 	public boolean nextPage(int pageNumber){
 		String SQL = "SELECT * FROM photobbs WHERE bbsId < ? AND bbsAvailable = 1";
@@ -173,5 +188,21 @@ public class PhotoBbsDAO {
 			e.printStackTrace();
 		}
 		return false; 
+	}
+	
+	// 총게시글 수
+	public int getCount() {
+		String SQL = "SELECT COUNT(*) FROM photobbs WHERE bbsAvailable = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, 1);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {	
+				return rs.getInt(1);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 }

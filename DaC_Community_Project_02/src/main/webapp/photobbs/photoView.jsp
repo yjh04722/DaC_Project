@@ -22,10 +22,13 @@ pageEncoding="UTF-8"%>
 	<%
 		String code = request.getParameter("code");
 		
+		// 세션에 저장된 아이디와 레벨 불러옴
 		String userEmail = null;
-	
-		if(session.getAttribute("userEmail") != null){
-			userEmail = (String)session.getAttribute("userEmail");
+		String userLevel = null;
+		
+		if (session.getAttribute("userEmail") != null){
+		    userEmail = (String)session.getAttribute("userEmail");
+		    userLevel = (String)session.getAttribute("userLevel");
 		}
 		
 		int bbsId = 0;
@@ -72,7 +75,7 @@ pageEncoding="UTF-8"%>
 						<a href="../photobbs/photoBbs.jsp" class="btn btn-success">목록</a>
 						
 						<%
-							if(userEmail != null && userEmail.equals(photoBbs.getUserId())){//해당 글이 본인이라면 수정과 삭제가 가능
+							if(userEmail != null && userEmail.equals(photoBbs.getUserId()) || userLevel != null && userLevel.equals("2")){//해당 글이 본인이라면 수정과 삭제가 가능
 						%>
 						<a href="./photoBbsUpdate.jsp?bbsId=<%=bbsId%>" class="btn btn-warning">수정</a>
 						<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="deleteAction.jsp?bbsId=<%=bbsId%>" class="btn btn-danger">삭제</a>

@@ -33,13 +33,14 @@ pageEncoding="UTF-8"%>
 			bbs_title = "문의사항";
 		}
 		
-		// 로그인 검증
-		String userEmail = null;
-	
-		if(session.getAttribute("userEmail") != null){
-			userEmail = (String)session.getAttribute("userEmail");
-		}
-		
+	 	// 세션에 저장된 아이디와 레벨 불러옴
+	    String userEmail = null;
+	 	String userLevel = null;
+	    if (session.getAttribute("userEmail") != null){
+	        userEmail = (String)session.getAttribute("userEmail");
+	        userLevel = (String)session.getAttribute("userLevel");
+	    }
+	    
 		// 게시글 번호
 		int bbsId = 0;
 		
@@ -54,12 +55,14 @@ pageEncoding="UTF-8"%>
 			script.println("</script>");
 		}
 		
+		// 댓글 기능 
 		Bbs bbs = new BbsDAO().getBbs(bbsId);
 		
 		int commentId = 0;
 		if(request.getParameter("commentId") != null)
 			commentId = Integer.parseInt(request.getParameter("commentId"));
 			Comment comment = new CommentDAO().getComment(commentId);
+			Comment comment2 = new Comment();
 		
 	%>
     <table style="width: 100%; height: 50px; text-align:center;">
@@ -92,7 +95,7 @@ pageEncoding="UTF-8"%>
 						<a href="./bbs.jsp" class="btn btn-success">목록</a>
 						
 						<%
-							if(userEmail != null && userEmail.equals(bbs.getUserId())){//해당 글이 본인이라면 수정과 삭제가 가능
+							if(userEmail != null && userEmail.equals(bbs.getUserId()) || userLevel != null && userLevel.equals("2")){//해당 글이 본인 alc 관리자이라면 수정과 삭제가 가능
 						%>
 						<a href="./bbsUpdate.jsp?bbsId=<%=bbsId%>" class="btn btn-warning">수정</a>
 						<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="deleteAction.jsp?bbsId=<%=bbsId%>" class="btn btn-danger">삭제</a>
@@ -111,9 +114,11 @@ pageEncoding="UTF-8"%>
                                 <td></td>
 							</tr>
 							<tr>
+
 						<%
                             CommentDAO commentDAO = new CommentDAO();
                             ArrayList<Comment> list = commentDAO.getList(bbsId, code);
+                            
                             for(int i=0; i<list.size(); i++){
 						%>
                             <tr>
@@ -121,7 +126,7 @@ pageEncoding="UTF-8"%>
                                 <td align="left"><%= list.get(i).getCommentContent() %></td>
                                 <td align="right"><%= list.get(i).getCommentDate().substring(0,11)+list.get(i).getCommentDate().substring(11,13)+"시"+list.get(i).getCommentDate().substring(14,16)+"분" %></td>
                                 <td align="right"><a href="/comment/commentUpdate.jsp?bbsId=<%=bbsId%>&commentId=<%=list.get(i).getCommentId()%>&code=<%=code%>" class="btn btn-warning">수정</a>
-                                <a onclick="return confirm('정말로 삭제하시겠습니까?')" href="/comment/commentDeleteAction.jsp?bbsId=<%=bbsId%>&commentId=<%=list.get(i).getCommentId()%>&code=<%=code%>" class="btn btn-danger">삭제</a></td>
+	                            <a onclick="return confirm('정말로 삭제하시겠습니까?')" href="/comment/commentDeleteAction.jsp?bbsId=<%=bbsId%>&commentId=<%=list.get(i).getCommentId()%>&code=<%=code%>" class="btn btn-danger">삭제</a></td>
                             </tr>
 						<%
 							}

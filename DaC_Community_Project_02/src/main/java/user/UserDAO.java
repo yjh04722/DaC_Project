@@ -4,10 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet; // 단축키 : ctrl + shift + 'o'
-
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpSession;
-
 import org.eclipse.jdt.internal.compiler.ast.ContinueStatement;
 
 public class UserDAO {
@@ -26,17 +24,23 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 	}
+	
 	// 로그인 기능 
 	public String login(String userEmail, String userPassword) {
-		String SQL = "SELECT userEmail, userPassword FROM user WHERE userEmail = ?";
+		String SQL = "SELECT userEmail, userPassword, userLevel FROM user WHERE userEmail = ?";
+		User user = new User();
+		String userLevel = null;
 		try {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, userEmail);
-			rs = pstmt.executeQuery(); // 쿼리 실행 
-
+			rs = pstmt.executeQuery(); // 쿼리 실행
+			
 			if(rs.next()) {
+				userLevel = rs.getString(3);
 				if (rs.getString(2).equals(userPassword)) { // rs.getString(1) : select된 첫번째 컬럼
-					return "1"; //로그인 성공
+					System.out.println(userLevel);
+					
+					return userLevel; //로그인 성공
 				}else {
 					return "0"; // 비밀번호 틀림
 				}
@@ -85,7 +89,6 @@ public class UserDAO {
 	
 			System.out.println("아이디 중복체크결과 : " + result);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		return result; // -1 : DB 오류

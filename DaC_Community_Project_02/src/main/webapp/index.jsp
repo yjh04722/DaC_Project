@@ -4,6 +4,8 @@
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import="bbs.BbsDAO" %>
 <%@ page import="bbs.Bbs" %>
+<%@ page import="missingbbs.MissingBbsDAO" %>
+<%@ page import="missingbbs.MissingBbs" %>
 <%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -12,6 +14,8 @@
 </head>
 <body>
  <% 
+ 	MissingBbsDAO missingBbsDAO = new MissingBbsDAO();
+ 
 	 String userEmail = null; // 로그인이 된 사람들은 로그인정보를 담을 수 있도록한다
 	 if (session.getAttribute("userEmail") != null){
 	     userEmail = (String)session.getAttribute("userEmail");
@@ -20,6 +24,21 @@
 	 if (request.getParameter("pageNumber") != null){
 	 	pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 	 }
+	 
+		// 총 게시글 수
+		int cnt = missingBbsDAO.getCount();
+		
+		// 한 페이지에 출력될 글 수
+		int pageSize = 2; 
+
+		// 현 페이지 정보 설정
+	    String pageNum = request.getParameter("pageNum");
+	    if (pageNum == null){
+	    		pageNum = "1";
+	    }
+		
+	    int currentPage = Integer.parseInt(pageNum);
+		int startRow = (currentPage - 1) * pageSize + 1;
  %>
   <table style="width: 100%; height: 50px;">
     <tr>
@@ -60,23 +79,36 @@
    	    			%>
     	    	</tbody>
    	    	   	 <tr>
-  	    			<td style=""><a href ="./bbs/bbs.jsp" style = "font-size:10pt; text-align:right; margin-left:100px;">>>더보기<<</a></td>
+  	    			<td style=""><a href ="./bbs/bbs.jsp" style="font-size:10pt; text-align:right;">>>더보기<<</a></td>
   	    		</tr>
     	    </table>
     	</div>
     	</div>
     	 <div class= "container_right">
-	    	    <table class= "table table-stripped" style= "text-align: center">
-		   	    	<tr>
-		   	    		<th class="tt2">제목</th>
-	    	    		<th class="tt3">작성자</th>
-		   	    	</tr>
-		    		<tr>
-		    			<td>관리자</td>
-		    			<td>안녕하세요</td>
-		    		</tr>
-	    	    </table>
-    	 </div>
+   		<%
+			ArrayList<MissingBbs> list2 = missingBbsDAO.getList2(currentPage);
+			for (int j =0; j < list2.size(); j++){
+		%>
+		<div class= "container_img" style="margin-top:-20px;">
+				<h3>오늘의 정보</h3>
+			    <table class= "table table-stripped" style= "text-align: center; boarder: 1px solid #dddddd">
+						<tr>
+							<td><img src="<%=list2.get(j).getFilename()%>" style="width:200px; height:200px;"></td>
+							<td style="text-align: left;">
+								<p>유기날짜 : <%=list2.get(j).getHappenDt()%></p>
+								<p>유기장소 : <%=list2.get(j).getHappenPlace()%></p>
+								<p>특   징 : <%=list2.get(j).getSpecialMark()%></p>
+								<p>보 호 소 : <%=list2.get(j).getCareNm()%></p>
+								<p>보호소번호 : <%=list2.get(j).getCareTel()%></p>
+								<p>보호소주소 : <%=list2.get(j).getCareAddr()%></p>
+							</td>
+						</tr>
+				    </table>
+				</div>
+			</div>
+	    <%
+			}
+		%>
          </td>
          <td style="width: 15%;"></td>
       </tr>

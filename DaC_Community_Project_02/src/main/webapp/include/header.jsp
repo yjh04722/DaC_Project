@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import = "java.io.PrintWriter" %>
+<jsp:useBean id="user" class="user.User" scope="page"></jsp:useBean>
 <% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -32,22 +33,25 @@
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/join.css">
     <link rel="stylesheet" href="../css/bbs.css">
-    <link rel="stylesheet" href="../css/photo.css">
-    
+    <link rel="stylesheet" href="../css/photo.css">  
   
     <title>Dog & Cat Community</title>
 
 </head>
 <% 
 String rq_userEmail = null;
-String rq_userId = null;
+String rq_level = null;
+
 if (session.getAttribute("userEmail") != null){
-	rq_userEmail = (String) session.getAttribute("userEmail");
-	rq_userId = (String) session.getAttribute("userId");
+	rq_userEmail = (String)session.getAttribute("userEmail");
+	rq_level = (String)session.getAttribute("userLevel");
 }
+
+
 %>
+
 <body>
-    <table style="width: 100%; height: 50px;">
+    <table style="width: 100%; height: 50px;db">
         <tr>
             <td style="width: 15%; height: 50px;"></td>
             <td style="width: 70%; height: 50px;">
@@ -70,34 +74,34 @@ if (session.getAttribute("userEmail") != null){
         <tr>
             <td style="width: 15%; height: 50px;"></td>
             <td style="width: 70%; height: 50px;">
-                <div><img src="../img/logo.png" alt="logo" style="padding-left: 30px; float: left; width: 130px; height: 70px; right: 12px;"></div>
+                <div><a href="/"><img src="../img/logo.png" alt="logo" style="padding-left: 30px; float: left; width: 130px; height: 70px; right: 12px;"></a></div>
                 <div style="margin-right: 400px;">
                     <nav id="gnb">
                         <ul style="padding-top: 25px;">
                             <li><a href="/">HOME</a></li>
                             <li><a href="/bbs/bbs.jsp?code=bbs">자유게시판</a></li>
                             <li><a href="/photobbs/photoBbs.jsp?code=photobbs">사진게시판</a></li>
-                            <li><a href="/missingbbs/missingBbs.jsp?code=missingbbs">실종신고</a></li>
+                            <li><a href="/missingbbs/missingBbs.jsp?code=missingbbs">유기동물조회</a></li>
                             <li><a href="/qna/qnaBbs.jsp?code=qnabbs">문의사항</a></li>
                         </ul>
                     </nav>
                 </div>
                 <div class="login">
-                	<%
-                		if(rq_userEmail == null){
-                	%>
-                    <a href="../join/join.jsp" style="float: left;">회원가입</a>
+               	<%
+               		if(rq_userEmail == null){
+               	%>
+                    <a href="/join/join.jsp" style="float: left;">회원가입</a>
                     <img src="../img/free-icon-font-tally-1-9585497.png" alt="" style="width: 17px; padding-left: 10px;">
-                    <a href="../login/login.jsp" style="float: right;">로그인</a>
-                    <%
-                    	}else{
-                    %>
+                    <a href="/login/login.jsp" style="float: right;">로그인</a>
+                <%
+                	}else{
+                %>
                     <a href="#" style="float: left;"><%=rq_userEmail %> 님</a>
                     <img src="../img/free-icon-font-tally-1-9585497.png" alt="" style="width: 17px; padding-left: 10px;">
-                    <a href="../login/logoutAction.jsp" style="float: right;">로그아웃</a>
-                    <%
-                    	}
-                    %>
+                    <a href="/login/logoutAction.jsp" style="float: right;">로그아웃</a>
+                <%
+                	}
+                %>
                 </div>
             </td>
             <td style="width: 15%; height: 50px;"></td>
