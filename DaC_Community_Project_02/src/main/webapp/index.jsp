@@ -79,7 +79,7 @@
    	    			%>
     	    	</tbody>
    	    	   	 <tr>
-  	    			<td style=""><a href ="./bbs/bbs.jsp" style="font-size:10pt; text-align:right;">>>더보기<<</a></td>
+  	    			<td style=""><a href ="./bbs/bbs.jsp" style="font-size:10pt; text-align:right; margin-left:50px;">>>더보기<<</a></td>
   	    		</tr>
     	    </table>
     	</div>

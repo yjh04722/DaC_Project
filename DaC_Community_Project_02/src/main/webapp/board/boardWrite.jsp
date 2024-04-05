@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/include/header.jsp" %>
 <%@ page import="java.io.PrintWriter" %>
-<%@ page import="bbs.BbsDAO" %>
-<%@ page import="bbs.Bbs" %>
+<%@ page import="board.BoardDAO" %>
+<%@ page import="board.BoardDTO" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -35,19 +35,20 @@
       <td style="width: 70%; height: 700px;">
 		 <div class= "container">
     	<div class= "row">
-    		<form method="post" action="writeAction.jsp">
+    		<form method="post" action="boardWriteAction.jsp">
+    		<input type="hidden" name="parentId" value="<%=request.getParameter("parentId")%>">
     			<table class= "table table-hover" style= "text-align: center; boarder: 1px solid #dddddd">
 	    	    	<thead>
 		    	    	<tr>
-		    	    		<th colspan= "2" style= "background-color: #eeeeee; text-align: center;">게시판 글쓰기 양식</th>
+		    	    		<th colspan= "2" style= "background-color: #eeeeee; text-align: center;">질의응답</th>
 		    	    	</tr>
 	    	    	</thead>
 			    	<tbody>
 			    		<tr>
-			    			<td><input type="text" class="form-control" placeholder="글 제목"  name="bbsTitle" maxlength="50" ></td>
+			    			<td><input type="text" class="form-control" placeholder="글 제목"  name="subject" maxlength="50" ></td>
 			    		</tr>
 			    		<tr>
-			    			<td><textarea class="form-control" placeholder="글 내용"  name="bbsContent" maxlength="2048" style= "height:350px" ></textarea></td>
+			    			<td><textarea class="form-control" placeholder="글 내용"  name="content" maxlength="2048" style= "height:350px" ></textarea></td>
 			    		</tr>
 			    	</tbody>
     	    	</table>

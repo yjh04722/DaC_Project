@@ -54,7 +54,7 @@
 						<header>
                             <h1>게시판 글 보기</h1>
                         </header>
-						<table class="table table-striped">
+						<table class="table table-hover">
 								<tr>
 									<td style="width: 20%"><b>글 제목</b></td>
 									<td colspan="2"><%= bbs.getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></td>

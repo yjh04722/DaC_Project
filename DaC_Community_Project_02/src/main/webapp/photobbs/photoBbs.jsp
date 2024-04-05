@@ -85,7 +85,7 @@
 		%>
 	<div class= "container_img">
 		<div class= "row">
-		    <table class= "table table-stripped" style= "text-align: center; boarder: 1px solid #dddddd">
+		    <table class= "table table-hover" style= "text-align: center; boarder: 1px solid #dddddd">
 					<tr>
 						<td><a href ="./photoView.jsp?bbsId=<%=list.get(i).getBbsId()%>&code=<%=list.get(i).getCode()%>"><img src="../bbsUpload/<%=list.get(i).getPhotoName()%>" style="width:250px; height: 250px; display:inline;"></a></td>
 					</tr>

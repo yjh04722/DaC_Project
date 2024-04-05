@@ -113,7 +113,7 @@
 		%>
 		<div class= "container_img">
 		<div class= "row">
-		    <table class= "table table-stripped" style= "text-align: center; boarder: 1px solid #dddddd">
+		    <table class= "table table-hover" style= "text-align: center; boarder: 1px solid #dddddd">
 					<tr>
 						<td><img src="<%=list.get(i).getFilename()%>" style="width:200px; height:200px; display:inline;"></td>
 					</tr>

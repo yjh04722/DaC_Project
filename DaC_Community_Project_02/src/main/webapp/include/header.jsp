@@ -82,7 +82,7 @@ if (session.getAttribute("userEmail") != null){
                             <li><a href="/bbs/bbs.jsp?code=bbs">자유게시판</a></li>
                             <li><a href="/photobbs/photoBbs.jsp?code=photobbs">사진게시판</a></li>
                             <li><a href="/missingbbs/missingBbs.jsp?code=missingbbs">유기동물조회</a></li>
-                            <li><a href="/qna/qnaBbs.jsp?code=qnabbs">문의사항</a></li>
+                            <li><a href="/board/board.jsp?code=qnabbs">문의사항</a></li>
                         </ul>
                     </nav>
                 </div>

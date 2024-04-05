@@ -54,7 +54,7 @@
 						<header>
                             <h1>게시판 글 보기</h1>
                         </header>
-						<table class="table table-striped">
+						<table class="table table-hover">
 								<tr>
 									<td colspan="2"><img src="/bbsUpload/<%=photoBbs.getPhotoName()%>" style="width:250px; display:inline;"></td>
 								</tr>						

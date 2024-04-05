@@ -55,7 +55,7 @@
 		        </section>
                 <hr />
                 <div class="section_div">
-                    <button type="submit" class="btn btn-primary btn_submit">수정하기</button>
+                    <button type="submit" class="btn btn-primary btn_submit">작성하기</button>
                 </div>
             </form>
     	</div>

@@ -64,7 +64,7 @@
 		<div class= "container">
 		    	<div class= "row">
 		    		<span style="margin-right: 950px;"><b>총게시글 수 : </b><%=cnt %></span>
-		    	    <table class= "table table-stripped" style= "text-align: center; boarder: 1px solid #dddddd">
+		    	    <table class= "table table-hover" style= "text-align: center; boarder: 1px solid #dddddd">
 		    	    	<thead>
 			    	    	<tr>
 			    	    		<th class="tt1">번호</th>

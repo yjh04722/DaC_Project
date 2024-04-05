@@ -61,7 +61,7 @@ pageEncoding="UTF-8"%>
 						<header>
                             <h1>게시판 글 보기</h1>
                         </header>
-						<table class="table table-striped">
+						<table class="table table-hover">
 								<tr>
 									<td colspan="2"><img src="../bbsUpload/<%=photoBbs.getPhotoName()%>" style="width:250px; display:inline;"></td>
 								</tr>						
@@ -86,7 +86,7 @@ pageEncoding="UTF-8"%>
 						<br>
 						<br>
 						<!-- 댓글 부분 -->
-                        <table class="table table-striped">
+                        <table class="table table-hover">
 							<tr>
 								<td><b>작성자</b></td>
 								<td><b>내용</b></td>

@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/include/header.jsp" %>
 <%@ page import="java.io.PrintWriter" %>
-<%@ page import="bbs.BbsDAO" %>
-<%@ page import="bbs.Bbs" %>
+<%@ page import="board.BoardDTO" %>
+<%@ page import="board.BoardDAO" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -30,12 +30,12 @@
     }
     
 	// 게시글 유효성 검사
-    int bbsId = 0;
-    if (request.getParameter("bbsId") != null)
+    int num = 0;
+    if (request.getParameter("num") != null)
     {
-        bbsId = Integer.parseInt(request.getParameter("bbsId"));
+        num = Integer.parseInt(request.getParameter("num"));
     }
-    if (bbsId == 0)
+    if (num == 0)
     {
         PrintWriter script = response.getWriter();
         script.println("<script>");
@@ -45,8 +45,8 @@
     }
     
     // 게시글 번호와 아이디를 비교하여 권한이 있는지를 확인
-    Bbs bbs = new BbsDAO().getBbs(bbsId);
-    if (!userEmail.equals(bbs.getUserId()) && userLevel.equals("1")){
+    BoardDTO board = new BoardDAO().getBoard(num);
+    if (!userEmail.equals(board.getId()) && userLevel.equals("1")){
     	PrintWriter script = response.getWriter();
         script.println("<script>");
         script.println("alert('권한이 없습니다.')");
@@ -60,7 +60,7 @@
       <td style="width: 70%; height: 700px;">
 	  <div class= "container">
     	<div class= "row">
-    		<form method="post" action="updateAction.jsp?bbsId=<%= bbsId%>">
+    		<form method="post" action="boardUpdateAction.jsp?num=<%=num%>">
     			<table class= "table table-hover" style= "text-align: center; boarder: 1px solid #dddddd">
 	    	    	<thead>
 		    	    	<tr>
@@ -69,10 +69,10 @@
 	    	    	</thead>
 			    	<tbody>
 			    		<tr>
-			    			<td><input type="text" class="form-control" placeholder="글 제목"  name="bbsTitle" maxlength="50" value="<%= bbs.getBbsTitle()%>"></td>
+			    			<td><input type="text" class="form-control" placeholder="글 제목"  name="subject" maxlength="50" value="<%= board.getSubject()%>"></td>
 			    		</tr>
 			    		<tr>
-			    			<td><textarea class="form-control" placeholder="글 내용"  name="bbsContent" maxlength="2048" style= "height:350px"><%= bbs.getBbsContent()%></textarea></td>
+			    			<td><textarea class="form-control" placeholder="글 내용"  name="content" maxlength="2048" style= "height:350px"><%= board.getContent()%></textarea></td>
 			    		</tr>
 			    	</tbody>
     	    	</table>
