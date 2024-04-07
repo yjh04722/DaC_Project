@@ -94,13 +94,19 @@ if (session.getAttribute("userEmail") != null){
                     <img src="../img/free-icon-font-tally-1-9585497.png" alt="" style="width: 17px; padding-left: 10px;">
                     <a href="/login/login.jsp" style="float: right;">로그인</a>
                 <%
+                	}else if(rq_level.equals("2")){
+                %>
+                    <a href="/admin/adminPage.jsp" style="float: left;">관리자님</a>
+                    <img src="../img/free-icon-font-tally-1-9585497.png" alt="" style="width: 17px; padding-left: 10px;">
+                    <a href="/login/logoutAction.jsp" style="float: right;">로그아웃</a>
+                <%
                 	}else{
                 %>
                     <a href="#" style="float: left;"><%=rq_userEmail %> 님</a>
                     <img src="../img/free-icon-font-tally-1-9585497.png" alt="" style="width: 17px; padding-left: 10px;">
                     <a href="/login/logoutAction.jsp" style="float: right;">로그아웃</a>
                 <%
-                	}
+                	} 
                 %>
                 </div>
             </td>

@@ -7,14 +7,15 @@
 <%@ page import="missingbbs.MissingBbsDAO" %>
 <%@ page import="missingbbs.MissingBbs" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="visitor.VisitorFilter" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
- <% 
- 	MissingBbsDAO missingBbsDAO = new MissingBbsDAO();
+ <%  
+	 MissingBbsDAO missingBbsDAO = new MissingBbsDAO();
  
 	 String userEmail = null; // 로그인이 된 사람들은 로그인정보를 담을 수 있도록한다
 	 if (session.getAttribute("userEmail") != null){

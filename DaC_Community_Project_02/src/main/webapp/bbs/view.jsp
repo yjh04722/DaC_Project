@@ -16,6 +16,10 @@ pageEncoding="UTF-8"%>
 		.comment_write {
 			display:flex;
 		}
+        .deleted-comment {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -123,10 +127,14 @@ pageEncoding="UTF-8"%>
 						%>
                             <tr>
                                 <td align="left"><img src="/img/arrow-turn-down-right-9247304.png" alt="" style="weight:15px; height:15px">&nbsp;&nbsp;<%= list.get(i).getUserId() %></td>
-                                <td align="left"><%= list.get(i).getCommentContent() %></td>
+                                <td align="left" class="<%= list.get(i).getCommentContent().equals("관리자에 의해 삭제된 댓글입니다.") ? "deleted-comment" : "" %>"><%= list.get(i).getCommentContent() %></td>
                                 <td align="right"><%= list.get(i).getCommentDate().substring(0,11)+list.get(i).getCommentDate().substring(11,13)+"시"+list.get(i).getCommentDate().substring(14,16)+"분" %></td>
-                                <td align="right"><a href="/comment/commentUpdate.jsp?bbsId=<%=bbsId%>&commentId=<%=list.get(i).getCommentId()%>&code=<%=code%>" class="btn btn-warning">수정</a>
-	                            <a onclick="return confirm('정말로 삭제하시겠습니까?')" href="/comment/commentDeleteAction.jsp?bbsId=<%=bbsId%>&commentId=<%=list.get(i).getCommentId()%>&code=<%=code%>" class="btn btn-danger">삭제</a></td>
+                                <td align="right"><%
+                                    if (!list.get(i).getCommentContent().equals("관리자에 의해 삭제된 댓글입니다.")) { // 삭제된 댓글이 아닌 경우에만 수정 및 삭제 버튼 표시
+                                %>
+                                    <a href="/comment/commentUpdate.jsp?bbsId=<%=bbsId%>&commentId=<%=list.get(i).getCommentId()%>&code=<%=code%>" class="btn btn-warning">수정</a>
+	                                <a onclick="return confirm('정말로 삭제하시겠습니까?')" href="/comment/commentDeleteAction.jsp?bbsId=<%=bbsId%>&commentId=<%=list.get(i).getCommentId()%>&code=<%=code%>" class="btn btn-danger">삭제</a>
+                                <% } %></td>
                             </tr>
 						<%
 							}
